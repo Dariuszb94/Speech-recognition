@@ -14,6 +14,7 @@
     <span id='message'></span>
     <br><br>
     <button id='saveNote'>Save a note</button>
+    <div id="firefox"></div>
     
  
     <script>
@@ -60,6 +61,11 @@
             anchor.click();
             message.textContent=null;
         });
+        if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+            var div = document.getElementById('firefox');
+
+div.innerHTML = 'I see that you are using firefox. In order to enable voice recognition you should type "about:config" in your bar adress, then you should type "media.webspeech.recognition.force_enable" and change to "true", the same with "media.webspeech.recognition.enable"';
+}
 
 
 
