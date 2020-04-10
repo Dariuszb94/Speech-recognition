@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="FileSaver.js"></script>
+</head>
+<body>
+    
+    <button id='btnGiveCommand'>Start a note</button>
+    <br><br>
+    <span id='message'></span>
+    <br><br>
+    <button id='saveNote'>Save a note</button>
+    
+ 
+    <script>
+        var message = document.querySelector('#message');
+
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+
+        var grammar = '#JSGF V1.0;'
+
+        var recognition = new SpeechRecognition();
+        var speechRecognitionList = new SpeechGrammarList();
+        speechRecognitionList.addFromString(grammar, 1);
+        recognition.grammars = speechRecognitionList;
+        recognition.lang = 'pl-PL';
+        recognition.interimResults = false;
+        recognition.continuous=true;
+
+        recognition.onresult = function(event) {
+            var last = event.results.length - 1;
+            var command = event.results[last][0].transcript;
+            message.textContent += command ;
+        };
+
+        recognition.onspeechend = function() {
+            recognition.stop();
+        };
+
+        recognition.onerror = function(event) {
+            message.textContent = 'Error occurred in recognition: ' + event.error;
+        }        
+
+        document.querySelector('#btnGiveCommand').addEventListener('click', function(){
+            recognition.start();
+        });
+
+        document.querySelector('#saveNote').addEventListener('click', function(){
+            recognition.stop();
+            blob = new Blob([message.textContent], { type: 'text/plain' }),
+            anchor = document.createElement('a');
+            anchor.download = "note.txt";
+            anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
+            anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
+            anchor.click();
+            message.textContent=null;
+        });
+
+
+
+
+    </script>
+</body>
+</html>
