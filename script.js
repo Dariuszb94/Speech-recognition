@@ -32,7 +32,7 @@ window.onload=function voiceRecording(){
 
     document.querySelector('#saveNote').addEventListener('click', function(){
         recognition.stop();
-        this.saveFile();
+        saveFile();
     });
     this.ifFirefox();
 }
