@@ -18,15 +18,16 @@
     
  
     <script>
-        var message = document.querySelector('#message');
+        
+       let message = document.querySelector('#message');
 
-        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+        let SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        let SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
 
-        var grammar = '#JSGF V1.0;'
+        let grammar = '#JSGF V1.0;'
 
-        var recognition = new SpeechRecognition();
-        var speechRecognitionList = new SpeechGrammarList();
+        let recognition = new SpeechRecognition();
+        let speechRecognitionList = new SpeechGrammarList();
         speechRecognitionList.addFromString(grammar, 1);
         recognition.grammars = speechRecognitionList;
         recognition.lang = 'pl-PL';
@@ -34,14 +35,11 @@
         recognition.continuous=true;
 
         recognition.onresult = function(event) {
-            var last = event.results.length - 1;
-            var command = event.results[last][0].transcript;
+            let last = event.results.length - 1;
+            let command = event.results[last][0].transcript;
             message.textContent += command ;
         };
 
-        recognition.onspeechend = function() {
-            recognition.stop();
-        };
 
         recognition.onerror = function(event) {
             message.textContent = 'Error occurred in recognition: ' + event.error;
@@ -61,12 +59,12 @@
             anchor.click();
             message.textContent=null;
         });
-        if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+        if(navigator.userAgent.toLowerCase().indexOf('firefox') > 0){
             var div = document.getElementById('firefox');
 
-div.innerHTML = 'I see that you are using firefox. In order to enable voice recognition you should type "about:config" in your bar adress, then you should type "media.webspeech.recognition.force_enable" and change to "true", the same with "media.webspeech.recognition.enable"';
-}
 
+div.innerHTML = "1. In the address bar, type about:config (with no quotes), and press Enter.</br> 2. Click 'I'll be careful, I promise'<br />3.In the search bar, search for 'media.webspeech.recognition.force_enable' (with no quotes).</br>4. Right click the result named 'media.webspeech.recognition.force_enable' and click 'Toggle'.<br />5. In the search bar, search for 'media.webspeech.recognition.enable' (with no quotes).</br>6. Right click the result named 'media.webspeech.recognition.enable' and click 'Toggle'.";
+}
 
 
 
