@@ -19,15 +19,15 @@
  
     <script>
         
-       let message = document.querySelector('#message');
+       var message = document.querySelector('#message');
 
-        let SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-        let SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
 
-        let grammar = '#JSGF V1.0;'
+        var grammar = '#JSGF V1.0;'
 
-        let recognition = new SpeechRecognition();
-        let speechRecognitionList = new SpeechGrammarList();
+        var recognition = new SpeechRecognition();
+        var speechRecognitionList = new SpeechGrammarList();
         speechRecognitionList.addFromString(grammar, 1);
         recognition.grammars = speechRecognitionList;
         recognition.lang = 'pl-PL';
@@ -35,11 +35,15 @@
         recognition.continuous=true;
 
         recognition.onresult = function(event) {
-            let last = event.results.length - 1;
-            let command = event.results[last][0].transcript;
+            var last = event.results.length - 1;
+            var command = event.results[last][0].transcript;
             message.textContent += command ;
         };
 
+        recognition.onspeechend = function() {
+            recognition.stop();
+            reInitializeRecording();
+        };
 
         recognition.onerror = function(event) {
             message.textContent = 'Error occurred in recognition: ' + event.error;
@@ -62,7 +66,14 @@
         if(navigator.userAgent.toLowerCase().indexOf('firefox') > 0){
             var div = document.getElementById('firefox');
 
-
+function reInitializeRecording(){
+    console.log("sdsad");
+    recognition.start();
+    
+}
+recognition.onsoundend = function() {
+  console.log('Sound has stopped being received');
+}
 div.innerHTML = "1. In the address bar, type about:config (with no quotes), and press Enter.</br> 2. Click 'I'll be careful, I promise'<br />3.In the search bar, search for 'media.webspeech.recognition.force_enable' (with no quotes).</br>4. Right click the result named 'media.webspeech.recognition.force_enable' and click 'Toggle'.<br />5. In the search bar, search for 'media.webspeech.recognition.enable' (with no quotes).</br>6. Right click the result named 'media.webspeech.recognition.enable' and click 'Toggle'.";
 }
 
